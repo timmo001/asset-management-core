@@ -16,9 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <body className="flex flex-col gap-4 bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
         <NavigationTop />
-        <main className="flex min-h-screen flex-col items-center justify-start p-4">
+        <main className="flex min-h-screen flex-col items-center justify-start">
           {children}
         </main>
       </body>
