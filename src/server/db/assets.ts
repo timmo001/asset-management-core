@@ -34,6 +34,7 @@ export async function getMyAssets() {
 
   return await db.query.assets.findMany({
     where: (model, { eq }) => eq(model.createdBy, user.userId),
+    orderBy: (model, { desc }) => desc(model.createdAt),
   });
 }
 

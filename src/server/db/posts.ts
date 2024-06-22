@@ -34,6 +34,7 @@ export async function getMyPosts() {
 
   return await db.query.posts.findMany({
     where: (model, { eq }) => eq(model.createdBy, user.userId),
+    orderBy: (model, { desc }) => desc(model.createdAt),
   });
 }
 
