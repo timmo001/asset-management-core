@@ -1,3 +1,4 @@
+import { SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
 
 import { db } from "~/server/db";
@@ -31,27 +32,31 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section>
-        <h2 className="text-3xl font-semibold">Assets</h2>
-        <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {assets.map((asset, index) => (
-            <Link key={asset.id} href={`/asset/${asset.id}`}>
-              <div
-                key={index}
-                className="transform shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                <img src={asset.images[0]?.url} className="rounded-lg" />
-                <div className="absolute bottom-0 start-0 w-full rounded-bl-lg rounded-br-lg bg-slate-950 bg-opacity-40 px-2 py-2">
-                  <h3 className="text-lg font-medium">{asset.name}</h3>
-                  <p className="overflow-hidden truncate text-ellipsis text-wrap text-sm text-gray-500">
-                    {asset.description}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <SignedIn>
+        <>
+          <section>
+            <h2 className="text-3xl font-semibold">Assets</h2>
+            <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {assets.map((asset, index) => (
+                <Link key={asset.id} href={`/asset/${asset.id}`}>
+                  <div
+                    key={index}
+                    className="transform shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl"
+                  >
+                    <img src={asset.images[0]?.url} className="rounded-lg" />
+                    <div className="absolute bottom-0 start-0 w-full rounded-bl-lg rounded-br-lg bg-slate-950 bg-opacity-40 px-2 py-2">
+                      <h3 className="text-lg font-medium">{asset.name}</h3>
+                      <p className="overflow-hidden truncate text-ellipsis text-wrap text-sm text-gray-500">
+                        {asset.description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </>
+      </SignedIn>
     </>
   );
 }
