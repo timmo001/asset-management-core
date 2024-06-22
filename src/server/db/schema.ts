@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   index,
   pgTableCreator,
@@ -68,3 +68,14 @@ export const assetImages = createTable(
     urlIndex: index("url_idx").on(example.url),
   }),
 );
+
+export const assetsRelations = relations(assets, ({ many }) => ({
+  images: many(assetImages),
+}));
+
+export const assetImagesRelations = relations(assetImages, ({ one }) => ({
+  asset: one(assets, {
+    fields: [assetImages.assetId],
+    references: [assets.id],
+  }),
+}));
