@@ -1,4 +1,4 @@
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 import { db } from "~/server/db";
@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section>
+      <section className="w-full">
         <h2 className="text-3xl font-semibold">News</h2>
         <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {posts.map((post) => (
@@ -32,9 +32,21 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <SignedOut>
+        <section className="w-full py-24">
+          <h2 className="text-center text-3xl font-semibold">
+            Please{" "}
+            <span className="text-violet-600">
+              <SignInButton>Sign in</SignInButton>
+            </span>{" "}
+            to continue
+          </h2>
+        </section>
+      </SignedOut>
+
       <SignedIn>
         <>
-          <section>
+          <section className="w-full">
             <h2 className="text-3xl font-semibold">Assets</h2>
             <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
               {assets.map((asset, index) => (
