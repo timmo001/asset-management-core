@@ -1,3 +1,3 @@
 # Asset Management - Core
 
-Lorem ipsum
+Asset Management System Written with the T3 stack
