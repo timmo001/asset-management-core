@@ -1,7 +1,7 @@
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 import { db } from "~/server/db";
+import SignedInContainer from "~/components/signedInContainer";
 
 export const dynamic = "force-dynamic";
 
@@ -32,19 +32,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <SignedOut>
-        <section className="w-full py-24">
-          <h2 className="text-center text-3xl font-semibold">
-            Please{" "}
-            <span className="text-violet-600">
-              <SignInButton>Sign in</SignInButton>
-            </span>{" "}
-            to continue
-          </h2>
-        </section>
-      </SignedOut>
-
-      <SignedIn>
+      <SignedInContainer>
         <>
           <section className="w-full">
             <h2 className="text-3xl font-semibold">Assets</h2>
@@ -68,7 +56,7 @@ export default async function HomePage() {
             </div>
           </section>
         </>
-      </SignedIn>
+      </SignedInContainer>
     </>
   );
 }
