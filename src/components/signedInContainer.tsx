@@ -12,7 +12,7 @@ export default function SignedInContainer({
           <h2 className="text-center text-3xl font-semibold">
             Please{" "}
             <span className="text-violet-600">
-              <SignInButton>Sign in</SignInButton>
+              <SignInButton mode="modal">Sign in</SignInButton>
             </span>{" "}
             to continue
           </h2>

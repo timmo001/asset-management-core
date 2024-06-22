@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { GeistSans } from "geist/font/sans";
 
 import "~/styles/globals.css";
@@ -17,7 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+        variables: {
+          colorPrimary: "#5b21b6",
+          colorBackground: "#020617",
+          colorInputText: "#ffffff",
+        },
+      }}
+    >
       <html lang="en" className={`${GeistSans.variable}`}>
         <body className="flex flex-col items-center gap-4 bg-gradient-to-b from-slate-950 to-black text-white">
           <NavigationTop />
