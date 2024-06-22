@@ -2,19 +2,16 @@ import Link from "next/link";
 
 import { db } from "~/server/db";
 
-const mockImages = [
-  "https://utfs.io/f/079fe122-f29c-4f53-9316-cc344ac5c82f-5nw3rt.png",
-  "https://utfs.io/f/bcdf2cba-a07a-4d5d-bd26-e8db15a087ef-kc0ia5.png",
-  "https://utfs.io/f/c4d353eb-91de-4970-b726-0d590cd5a3df-se5sys.png",
-  "https://utfs.io/f/dafd034c-b1b3-4811-9151-e43c537d7014-e6hk9p.png",
-];
-
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const posts = await db.query.posts.findMany();
-
-  console.log(posts);
+  const posts = await db.query.posts.findMany({
+    orderBy: (model, { desc }) => desc(model.createdAt),
+  });
+  const assets = await db.query.assets.findMany({
+    orderBy: (model, { desc }) => desc(model.createdAt),
+    with: { images: true },
+  });
 
   return (
     <>
@@ -37,13 +34,21 @@ export default async function HomePage() {
       <section>
         <h2 className="text-3xl font-semibold">Assets</h2>
         <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {mockImages.map((image, index) => (
-            <div
-              key={index}
-              className="transform shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl"
-            >
-              <img src={image} className="rounded-lg" />
-            </div>
+          {assets.map((asset, index) => (
+            <Link key={asset.id} href={`/asset/${asset.id}`}>
+              <div
+                key={index}
+                className="transform shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                <img src={asset.images[0]?.url} className="rounded-lg" />
+                <div className="absolute bottom-0 start-0 w-full rounded-bl-lg rounded-br-lg bg-slate-950 bg-opacity-40 px-2 py-2">
+                  <h3 className="text-lg font-medium">{asset.name}</h3>
+                  <p className="overflow-hidden truncate text-ellipsis text-wrap text-sm text-gray-500">
+                    {asset.description}
+                  </p>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </section>
