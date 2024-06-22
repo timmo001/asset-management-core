@@ -25,6 +25,7 @@ export const posts = createTable(
   {
     id: serial("id").primaryKey(),
     title: varchar("title", { length: 256 }),
+    subtitle: varchar("subtitle", { length: 256 }),
     content: varchar("content", {}),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
