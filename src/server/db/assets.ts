@@ -25,6 +25,9 @@ export async function createAsset(name: string) {
 export async function getAssets() {
   return await db.query.assets.findMany({
     orderBy: (model, { desc }) => desc(model.createdAt),
+    with: {
+      images: true,
+    },
   });
 }
 
@@ -35,11 +38,17 @@ export async function getMyAssets() {
   return await db.query.assets.findMany({
     where: (model, { eq }) => eq(model.createdBy, user.userId),
     orderBy: (model, { desc }) => desc(model.createdAt),
+    with: {
+      images: true,
+    },
   });
 }
 
 export async function getAsset(id: number) {
   return await db.query.assets.findFirst({
     where: (model, { eq }) => eq(model.id, id),
+    with: {
+      images: true,
+    },
   });
 }

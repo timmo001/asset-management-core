@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import SignedInContainer from "~/components/signedInContainer";
@@ -33,22 +34,36 @@ export default async function HomePage() {
           <section className="w-full">
             <h2 className="text-3xl font-semibold">Assets</h2>
             <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {assets.map((asset, index) => (
-                <Link key={asset.id} href={`/assets/${asset.id}`}>
-                  <div
-                    key={index}
-                    className="transform shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl"
-                  >
-                    <img src={asset.images[0]?.url} className="rounded-lg" />
-                    <div className="absolute bottom-0 start-0 w-full rounded-bl-lg rounded-br-lg bg-slate-950 bg-opacity-40 px-2 py-2">
-                      <h3 className="text-lg font-medium">{asset.name}</h3>
-                      <p className="overflow-hidden truncate text-ellipsis text-wrap text-sm text-gray-500">
-                        {asset.description}
-                      </p>
+              {assets.map((asset, index) => {
+                const image = asset.images[0];
+                return (
+                  <Link key={asset.id} href={`/assets/${asset.id}`}>
+                    <div
+                      key={index}
+                      className="relative transform shadow-lg transition duration-300 hover:scale-105 hover:shadow-2xl"
+                    >
+                      {image ? (
+                        <Image
+                          className="rounded-lg"
+                          src={image.url}
+                          alt={image.description || "Asset Image"}
+                          height={520}
+                          width={520}
+                          style={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <div className="h-40 w-full rounded-lg bg-gray-300"></div>
+                      )}
+                      <div className="absolute bottom-0 start-0 w-full rounded-bl-lg rounded-br-lg bg-slate-950 bg-opacity-40 px-2 py-2">
+                        <h3 className="text-lg font-medium">{asset.name}</h3>
+                        <p className="overflow-hidden truncate text-ellipsis text-wrap text-sm text-gray-500">
+                          {asset.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </section>
         </>
