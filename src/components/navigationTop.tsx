@@ -11,7 +11,7 @@ export default function NavigationTop() {
         <Link href="/">Lorem ipsum</Link>
       </div>
       <div className="flex-1" />
-      <button className="transform rounded-md bg-violet-900 px-4 py-2 text-white shadow-lg drop-shadow-2xl transition duration-300 hover:scale-105">
+      <button className="transform rounded-md bg-violet-900 bg-opacity-60 px-4 py-2 text-white shadow-lg drop-shadow-2xl transition duration-300 hover:scale-105">
         <Link href="/login">Login</Link>
       </button>
     </nav>
