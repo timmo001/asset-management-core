@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NavigationTop() {
   return (
-    <nav className="mx-auto flex w-full max-w-6xl items-center justify-start gap-4 p-2 text-lg font-light">
+    <nav className="mx-auto flex w-full max-w-screen-xl items-center justify-start gap-4 px-8 py-3 text-lg font-light">
       <div>
         <Link href="/">Asset Management</Link>
       </div>
