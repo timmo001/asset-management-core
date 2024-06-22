@@ -20,7 +20,7 @@ export default async function HomePage() {
         <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {posts.map((post) => (
             <Link key={post.id} href={`/post/${post.id}`}>
-              <div className="block rounded-lg bg-violet-900 bg-opacity-35 p-4 shadow-xl transition duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="block rounded-lg bg-violet-950 bg-opacity-30 p-4 shadow-xl transition duration-300 hover:scale-105 hover:shadow-2xl">
                 <h3 className="text-xl font-medium">{post.title}</h3>
                 <p className="overflow-hidden truncate text-ellipsis text-wrap text-gray-500">
                   {post.subtitle}
