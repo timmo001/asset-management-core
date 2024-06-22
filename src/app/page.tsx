@@ -1,3 +1,7 @@
+import Link from "next/link";
+
+import { db } from "~/server/db";
+
 let mockImages = [
   "https://utfs.io/f/079fe122-f29c-4f53-9316-cc344ac5c82f-5nw3rt.png",
   "https://utfs.io/f/bcdf2cba-a07a-4d5d-bd26-e8db15a087ef-kc0ia5.png",
@@ -6,12 +10,30 @@ let mockImages = [
 ];
 mockImages = [...mockImages, ...mockImages, ...mockImages, ...mockImages];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const posts = await db.query.posts.findMany();
+
+  console.log(posts);
+
   return (
     <>
-      <h1 className="text-5xl font-light drop-shadow-xl">Asset Management</h1>
+      <section>
+        <h2 className="text-3xl font-semibold">News</h2>
+        <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {posts.map((post) => (
+            <Link key={post.id} href={`/post/${post.id}`}>
+              <div className="block rounded-lg bg-violet-900 bg-opacity-35 p-4 shadow-xl transition duration-300 hover:shadow-2xl">
+                <h3 className="text-xl font-medium">{post.title}</h3>
+                <p className="overflow-hidden truncate text-ellipsis text-wrap text-gray-500">
+                  {post.subtitle}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {mockImages.map((image, index) => (
           <div
             key={index}
@@ -20,7 +42,7 @@ export default function HomePage() {
             <img src={image} className="rounded-lg" />
           </div>
         ))}
-      </div>
+      </section>
     </>
   );
 }
