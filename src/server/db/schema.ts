@@ -27,10 +27,12 @@ export const posts = createTable(
     title: varchar("title", { length: 256 }).notNull(),
     subtitle: varchar("subtitle", { length: 256 }),
     content: varchar("content", {}),
+    createdBy: varchar("created_by", { length: 256 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    updatedBy: varchar("updated_by", { length: 256 }).notNull(),
   },
   (example) => ({
     titleIndex: index("title_idx").on(example.title),
@@ -46,7 +48,9 @@ export const assets = createTable(
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
+    createdBy: varchar("created_by", { length: 256 }).notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    updatedBy: varchar("updated_by", { length: 256 }).notNull(),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
@@ -62,6 +66,10 @@ export const assetImages = createTable(
       .notNull(),
     url: varchar("url", {}).notNull(),
     description: varchar("description", { length: 256 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    createdBy: varchar("created_by", { length: 256 }).notNull(),
   },
   (example) => ({
     assetIdIndex: index("asset_id_idx").on(example.assetId),
