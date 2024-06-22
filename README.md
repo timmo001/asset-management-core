@@ -1,3 +1,3 @@
 # Asset Management - Core
 
-Asset Management System Written with the T3 stack
+Asset management system written with the T3 stack
