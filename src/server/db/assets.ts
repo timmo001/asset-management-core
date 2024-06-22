@@ -4,23 +4,23 @@ import { auth } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
 import { assets } from "~/server/db/schema";
 
-export async function createAsset(name: string) {
-  const user = auth();
+// export async function createAsset(name: string) {
+//   const user = auth();
 
-  console.log("Create new asset:", {
-    name: name,
-    createdBy: user.userId,
-  });
+//   console.log("Create new asset:", {
+//     name: name,
+//     createdBy: user.userId,
+//   });
 
-  const result = await db.insert(assets).values({
-    name: name,
-    createdBy: user.userId,
-    updatedBy: user.userId,
-  });
-  console.log("Asset created:", result);
+//   const result = await db.insert(assets).values({
+//     name: name,
+//     createdBy: user.userId,
+//     updatedBy: user.userId,
+//   });
+//   console.log("Asset created:", result);
 
-  return {};
-}
+//   return {};
+// }
 
 export async function getAssets() {
   return await db.query.assets.findMany({
