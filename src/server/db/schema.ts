@@ -36,3 +36,35 @@ export const posts = createTable(
     titleIndex: index("title_idx").on(example.title),
   }),
 );
+
+export const assets = createTable(
+  "asset",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    description: varchar("description", {}),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true }),
+  },
+  (example) => ({
+    nameIndex: index("name_idx").on(example.name),
+  }),
+);
+
+export const assetImages = createTable(
+  "asset_image",
+  {
+    id: serial("id").primaryKey(),
+    assetId: serial("asset_id")
+      .references(() => assets.id)
+      .notNull(),
+    url: varchar("url", {}).notNull(),
+    description: varchar("description", { length: 256 }),
+  },
+  (example) => ({
+    assetIdIndex: index("asset_id_idx").on(example.assetId),
+    urlIndex: index("url_idx").on(example.url),
+  }),
+);
