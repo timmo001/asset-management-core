@@ -10,6 +10,7 @@ const config = {
     remotePatterns: [{ hostname: "utfs.io" }],
   },
   eslint: {
+    // ESLint is disabled during builds to avoid slowing down the build process.
     ignoreDuringBuilds: true,
   },
 };
