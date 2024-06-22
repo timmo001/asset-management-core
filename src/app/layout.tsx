@@ -1,6 +1,8 @@
+import { ClerkProvider } from "@clerk/nextjs";
+import { GeistSans } from "geist/font/sans";
+
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
 import NavigationTop from "~/components/navigationTop";
 
 export const metadata = {
@@ -15,13 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="flex flex-col items-center gap-4 bg-gradient-to-b from-slate-950 to-black text-white">
-        <NavigationTop />
-        <main className="flex min-h-screen max-w-screen-xl flex-col items-start justify-start gap-8 px-12">
-          {children}
-        </main>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${GeistSans.variable}`}>
+        <body className="flex flex-col items-center gap-4 bg-gradient-to-b from-slate-950 to-black text-white">
+          <NavigationTop />
+          <main className="flex min-h-screen max-w-screen-xl flex-col items-start justify-start gap-8 px-12">
+            {children}
+          </main>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
