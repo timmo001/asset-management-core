@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { createPost } from "~/server/db/asset";
 import SignedInContainer from "~/components/signedInContainer";
-import { createPost } from "~/serverActions/db/asset";
 
 export default function Page() {
   const router = useRouter();

@@ -1,15 +1,10 @@
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
 
-import { db } from "~/server/db";
-import { posts } from "~/server/db/schema";
 import SignedInContainer from "~/components/signedInContainer";
+import { getPost } from "~/server/db/posts";
 
 export default async function Page({ params }: { params: { id: number } }) {
-  const post = (
-    await db.select().from(posts).where(eq(posts.id, params.id))
-  )[0];
-
+  const post = await getPost(params.id);
   if (!post) notFound();
 
   return (

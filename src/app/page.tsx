@@ -1,18 +1,14 @@
 import Link from "next/link";
 
-import { db } from "~/server/db";
 import SignedInContainer from "~/components/signedInContainer";
+import { getAssets } from "~/server/db/assets";
+import { getPosts } from "~/server/db/posts";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const posts = await db.query.posts.findMany({
-    orderBy: (model, { desc }) => desc(model.createdAt),
-  });
-  const assets = await db.query.assets.findMany({
-    orderBy: (model, { desc }) => desc(model.createdAt),
-    with: { images: true },
-  });
+  const assets = await getAssets();
+  const posts = await getPosts();
 
   return (
     <>

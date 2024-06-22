@@ -1,4 +1,3 @@
-import { db } from "~/server/db";
 import SignedInContainer from "~/components/signedInContainer";
 
 export default async function Page() {
