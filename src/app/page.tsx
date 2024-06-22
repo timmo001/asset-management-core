@@ -8,7 +8,7 @@ mockImages = [...mockImages, ...mockImages, ...mockImages, ...mockImages];
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start bg-gradient-to-b from-[#2e026d] to-[#15162c] p-4 text-white">
+    <>
       <h1 className="text-5xl font-light drop-shadow-xl">Asset Management</h1>
 
       <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -21,6 +21,6 @@ export default function HomePage() {
           </div>
         ))}
       </div>
-    </main>
+    </>
   );
 }

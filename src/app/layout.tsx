@@ -1,6 +1,7 @@
 import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
+import NavigationTop from "~/components/navigationTop";
 
 export const metadata = {
   title: "Create T3 App",
@@ -15,7 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
+      <body className="bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+        <NavigationTop />
+        <main className="flex min-h-screen flex-col items-center justify-start p-4">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
