@@ -2,106 +2,98 @@
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { UploadedFileData } from "uploadthing/types";
 
-import { db, isCurrentUserAdmin } from "~/server/db";
-import { postImage, posts } from "~/server/db/schema";
+import { db, isCurrentUserAdmin, isUserAdmin } from "~/server/db";
+import {
+  images,
+  InsertPost,
+  posts,
+  SelectPost,
+  SelectPosts,
+} from "~/server/db/schema";
 
-// export async function createPost(title: string) {
-//   const user = auth();
-//   if (!(await isUserAdmin(user.userId))) throw new Error("Unauthorized");
+// ------------------------------------------------
+// CRUD
+// ------------------------------------------------
 
-//   console.log("Create new post:", {
-//     title: title,
-//     createdBy: user.userId,
-//   });
+// Create a new post
+export async function createPost(title: string): Promise<void> {
+  const user = auth();
+  if (!user.userId) throw new Error("Unauthorized");
+  if (!(await isUserAdmin(user.userId))) throw new Error("Unauthorized");
 
-//   const result = await db.insert(posts).values({
-//     title: title,
-//     createdBy: user.userId,
-//     updatedBy: user.userId,
-//   });
-//   console.log("Post created:", result);
+  console.log("Create new post:", {
+    title,
+    createdBy: user.userId,
+  });
 
-//   return {};
-// }
+  const result = await db
+    .insert(posts)
+    .values({
+      title,
+      createdBy: user.userId,
+    })
+    .returning();
+  console.log("Insert result:", result);
+  if (result.length === 0 || !result[0])
+    throw new Error("Failed to create post");
 
-export async function getPosts() {
+  redirect(`/posts/${result[0].id}/edit`);
+}
+
+// Get all posts
+export async function getPosts(): Promise<SelectPosts> {
   return await db.query.posts.findMany({
     orderBy: (model, { desc }) => desc(model.createdAt),
-    // with: {
-    //   image: true,
-    // },
   });
 }
 
-export async function getMyPosts() {
+// Get all posts created by the current user
+export async function getMyPosts(): Promise<SelectPosts> {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
   return await db.query.posts.findMany({
     where: (model, { eq }) => eq(model.createdBy, user.userId),
     orderBy: (model, { desc }) => desc(model.createdAt),
-    // with: {
-    //   image: true,
-    // },
   });
 }
 
-export async function getPost(id: number) {
+// Get a single post by ID
+export async function getPost(id: number): Promise<SelectPost | undefined> {
   return await db.query.posts.findFirst({
     where: (model, { eq }) => eq(model.id, id),
-    // with: {
-    //   image: true,
-    // },
   });
 }
 
-export async function updatePostImage(
-  file: UploadedFileData,
-  postId: number,
-  userId: string,
-) {
+// Update a post by ID
+export async function updatePost(
+  post: InsertPost & { id: number },
+): Promise<void> {
+  const user = auth();
+  if (!user.userId) throw new Error("Unauthorized");
   if (!(await isCurrentUserAdmin())) throw new Error("Unauthorized");
 
-  const existing = await db.query.postImage.findFirst({
-    where: (model, { eq }) => eq(model.postId, postId),
-  });
+  console.log("Update post:", post);
 
-  if (existing?.id) {
-    const result = await db
-      .update(postImage)
-      .set({
-        url: file.url,
-        description: file.name,
-        createdBy: userId,
-      })
-      .where(eq(postImage.id, existing.id));
+  const result = await db
+    .update(posts)
+    .set({
+      ...post,
+      updatedBy: user.userId,
+    })
+    .where(eq(posts.id, post.id));
+  console.log("Update result:", result);
 
-    console.log("Updated post image:", result.rows[0]);
-
-    // This is sent to the clientside `onClientUploadComplete` callback
-    return result.rows[0];
-  } else {
-    const result = await db.insert(postImage).values({
-      postId: postId,
-      url: file.url,
-      description: file.name,
-      createdBy: userId,
-    });
-
-    console.log("Inserted post image:", result.rows[0]);
-
-    // This is sent to the clientside `onClientUploadComplete` callback
-    return result.rows[0];
-  }
+  redirect(`/posts/${post.id}`);
 }
 
-export async function deletePost(id: number) {
+// Delete a post by ID
+export async function deletePost(id: number): Promise<void> {
   if (!(await isCurrentUserAdmin())) throw new Error("Unauthorized");
 
   const result = await db.delete(posts).where(eq(posts.id, id));
-  console.log("Deleted post:", result);
+  console.log("Delete result:", result);
 
   // This will redirect the user to the homepage
   redirect("/");

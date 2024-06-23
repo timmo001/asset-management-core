@@ -35,7 +35,7 @@ export default function RootLayout({
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <body className="flex flex-col items-center gap-4 bg-gradient-to-b from-slate-950 to-black text-white">
           <NavigationTop />
-          <main className="flex min-h-screen max-w-screen-xl flex-col items-start justify-start gap-8 px-12">
+          <main className="max-w-screen-xl flex min-h-screen flex-col items-start justify-start gap-8 px-12">
             {children}
           </main>
         </body>

@@ -1,9 +1,15 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { relations, sql } from "drizzle-orm";
+import {
+  InferInsertModel,
+  InferSelectModel,
+  relations,
+  sql,
+} from "drizzle-orm";
 import {
   index,
+  integer,
   pgTableCreator,
   serial,
   timestamp,
@@ -20,6 +26,31 @@ export const createTable = pgTableCreator(
   (name) => `asset-management-core_${name}`,
 );
 
+export const images = createTable(
+  "image",
+  {
+    id: serial("id").primaryKey(),
+    identifier: varchar("identifier", { length: 256 }).notNull(),
+    url: varchar("url", {}).notNull(),
+    description: varchar("description", { length: 256 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    createdBy: varchar("created_by", { length: 256 }),
+    updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    updatedBy: varchar("updated_by", { length: 256 }),
+  },
+  (example) => ({
+    identifierIndex: index("image_identifier_idx").on(example.identifier),
+    urlIndex: index("image_url_idx").on(example.url),
+  }),
+);
+
+export type SelectImage = InferSelectModel<typeof images>;
+export type SelectImages = Array<SelectImage>;
+export type InsertImage = InferInsertModel<typeof images>;
+export type InsertImages = Array<InsertImage>;
+
 export const posts = createTable(
   "post",
   {
@@ -27,48 +58,23 @@ export const posts = createTable(
     title: varchar("title", { length: 256 }).notNull(),
     subtitle: varchar("subtitle", { length: 256 }),
     content: varchar("content", {}),
-    createdBy: varchar("created_by", { length: 256 }).notNull(),
+    imageId: integer("image_id"),
+    createdBy: varchar("created_by", { length: 256 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
-    updatedBy: varchar("updated_by", { length: 256 }).notNull(),
+    updatedBy: varchar("updated_by", { length: 256 }),
   },
   (example) => ({
-    titleIndex: index("title_idx").on(example.title),
+    titleIndex: index("post_title_idx").on(example.title),
   }),
 );
 
-export const postImage = createTable(
-  "post_image",
-  {
-    id: serial("id").primaryKey(),
-    postId: serial("post_id")
-      .references(() => posts.id)
-      .notNull(),
-    url: varchar("url", {}).notNull(),
-    description: varchar("description", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    createdBy: varchar("created_by", { length: 256 }).notNull(),
-  },
-  (example) => ({
-    postIdIndex: index("post_id_idx").on(example.postId),
-    urlIndex: index("post_url_idx").on(example.url),
-  }),
-);
-
-export const postsRelations = relations(posts, ({ one }) => ({
-  image: one(assetImages),
-}));
-
-export const postImageRelations = relations(postImage, ({ one }) => ({
-  post: one(posts, {
-    fields: [postImage.postId],
-    references: [posts.id],
-  }),
-}));
+export type SelectPost = InferSelectModel<typeof posts>;
+export type SelectPosts = Array<SelectPost>;
+export type InsertPost = InferInsertModel<typeof posts>;
+export type InsertPosts = Array<InsertPost>;
 
 export const assets = createTable(
   "asset",
@@ -76,45 +82,34 @@ export const assets = createTable(
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull(),
     description: varchar("description", {}),
+    imageIds: integer("image_ids")
+      .array()
+      .notNull()
+      .default(sql`ARRAY[]::integer[]`),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    createdBy: varchar("created_by", { length: 256 }).notNull(),
+    createdBy: varchar("created_by", { length: 256 }),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
-    updatedBy: varchar("updated_by", { length: 256 }).notNull(),
+    updatedBy: varchar("updated_by", { length: 256 }),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+    nameIndex: index("asset_name_idx").on(example.name),
   }),
 );
 
-export const assetImages = createTable(
-  "asset_image",
-  {
-    id: serial("id").primaryKey(),
-    assetId: serial("asset_id")
-      .references(() => assets.id)
-      .notNull(),
-    url: varchar("url", {}).notNull(),
-    description: varchar("description", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    createdBy: varchar("created_by", { length: 256 }).notNull(),
-  },
-  (example) => ({
-    assetIdIndex: index("asset_id_idx").on(example.assetId),
-    urlIndex: index("asset_url_idx").on(example.url),
+export type SelectAsset = InferSelectModel<typeof assets>;
+export type SelectAssets = Array<SelectAsset>;
+export type InsertAsset = InferInsertModel<typeof assets>;
+export type InsertAssets = Array<InsertAsset>;
+
+export const imagesRelations = relations(images, ({ one, many }) => ({
+  posts: one(posts, {
+    fields: [images.id],
+    references: [posts.imageId],
+    relationName: "postImage",
   }),
-);
-
-export const assetsRelations = relations(assets, ({ many }) => ({
-  images: many(assetImages),
-}));
-
-export const assetImagesRelations = relations(assetImages, ({ one }) => ({
-  asset: one(assets, {
-    fields: [assetImages.assetId],
-    references: [assets.id],
+  assets: many(assets, {
+    relationName: "assetImages",
   }),
 }));

@@ -1,12 +1,10 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
+import { createPost } from "~/server/db/posts";
 import SignedInContainer from "~/components/signedInContainer";
 
 export default function Page() {
-  const router = useRouter();
-
   const [title, setTitle] = useState<string>("");
 
   return (
@@ -25,12 +23,7 @@ export default function Page() {
         <section className="w-full">
           <button
             className="w-full transform rounded-lg bg-violet-900 px-7 py-2 font-normal transition duration-300 hover:bg-violet-800"
-            onClick={() => {
-              // createPost(title).then((post) => {
-              //   console.log("Post created", post);
-              //   // router.replace(`/posts/edit/${post.id}`);
-              // });
-            }}
+            onClick={() => createPost(title)}
           >
             Create
           </button>
