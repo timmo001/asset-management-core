@@ -39,6 +39,37 @@ export const posts = createTable(
   }),
 );
 
+export const postImage = createTable(
+  "post_image",
+  {
+    id: serial("id").primaryKey(),
+    postId: serial("post_id")
+      .references(() => posts.id)
+      .notNull(),
+    url: varchar("url", {}).notNull(),
+    description: varchar("description", { length: 256 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    createdBy: varchar("created_by", { length: 256 }).notNull(),
+  },
+  (example) => ({
+    postIdIndex: index("post_id_idx").on(example.postId),
+    urlIndex: index("post_url_idx").on(example.url),
+  }),
+);
+
+export const postsRelations = relations(posts, ({ one }) => ({
+  image: one(assetImages),
+}));
+
+export const postImageRelations = relations(postImage, ({ one }) => ({
+  post: one(posts, {
+    fields: [postImage.postId],
+    references: [posts.id],
+  }),
+}));
+
 export const assets = createTable(
   "asset",
   {
@@ -73,7 +104,7 @@ export const assetImages = createTable(
   },
   (example) => ({
     assetIdIndex: index("asset_id_idx").on(example.assetId),
-    urlIndex: index("url_idx").on(example.url),
+    urlIndex: index("asset_url_idx").on(example.url),
   }),
 );
 
