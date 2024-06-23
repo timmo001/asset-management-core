@@ -52,7 +52,7 @@ export default function UpdatePost({ postIn }: { postIn: any }) {
             }}
             endpoint="postImageUploader"
             onClientUploadComplete={(d) => {
-              console.log("Uploaded:", d);
+              console.log("Upload complete:", d);
             }}
           />
           <img src={post.image?.url} alt={post.image?.description} />
