@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
-import SignedInContainer from "~/components/signedInContainer";
 import { getImageByIdentifier } from "~/server/db/image";
 import { getPost } from "~/server/db/posts";
 import { isCurrentUserAdmin } from "~/server/db";
-import Link from "next/link";
+import SignedInContainer from "~/components/signedInContainer";
 
 export const dynamic = "force-dynamic";
 
