@@ -1,10 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { UploadedFileData } from "uploadthing/types";
 
 const f = createUploadthing();
 
-async function middleware({}) {
+async function middleware() {
   // This code runs on your server before upload
   const user = auth();
 
@@ -15,7 +16,15 @@ async function middleware({}) {
   return { userId: user.userId };
 }
 
-async function uploadComplete({ metadata, file }) {
+async function uploadComplete({
+  metadata,
+  file,
+}: {
+  metadata: {
+    userId: string;
+  };
+  file: UploadedFileData;
+}) {
   // This code runs on your server after upload
   console.log("Upload complete for userId:", metadata.userId);
   console.log("File url:", file.url);
