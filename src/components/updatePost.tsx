@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from "react";
 
 import SignedInContainer from "~/components/signedInContainer";
+import { UploadButton } from "~/utils/uploadthing";
 
 export default function UpdatePost({ postIn }: { postIn: any }) {
   const [post, setPost] = useState(postIn);
@@ -42,15 +43,20 @@ export default function UpdatePost({ postIn }: { postIn: any }) {
             onChange={updatePost}
           />
         </section>
-        {/* <section className="w-full">
-            <h3 className="text-xl font-semibold">Image</h3>
-            <UploadDropzone
-              endpoint="assetImagesUploader"
-              onClientUploadComplete={(result) => {
-                console.log("Image uploaded", result);
-              }}
-            />
-          </section> */}
+        <section className="w-full flex flex-col gap-4">
+          <h3 className="text-xl font-semibold">Image</h3>
+          <UploadButton
+            appearance={{
+              button:
+                "w-full transform rounded-lg bg-slate-800 px-7 py-2 font-normal transition duration-300 hover:bg-slate-700",
+            }}
+            endpoint="postImageUploader"
+            onClientUploadComplete={(d) => {
+              console.log("Uploaded:", d);
+            }}
+          />
+          <img src={post.image?.url} alt={post.image?.description} />
+        </section>
         <section className="w-full">
           <button className="w-full transform rounded-lg bg-violet-900 px-7 py-2 font-normal transition duration-300 hover:bg-violet-800">
             Update
