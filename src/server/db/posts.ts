@@ -41,18 +41,18 @@ export async function getMyPosts() {
   return await db.query.posts.findMany({
     where: (model, { eq }) => eq(model.createdBy, user.userId),
     orderBy: (model, { desc }) => desc(model.createdAt),
-    with: {
-      image: true,
-    },
+    // with: {
+    //   image: true,
+    // },
   });
 }
 
 export async function getPost(id: number) {
   return await db.query.posts.findFirst({
     where: (model, { eq }) => eq(model.id, id),
-    with: {
-      image: true,
-    },
+    // with: {
+    //   image: true,
+    // },
   });
 }
 
