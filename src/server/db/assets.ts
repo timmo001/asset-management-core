@@ -3,11 +3,12 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
-import { db } from "~/server/db";
+import { db, isCurrentUserAdmin } from "~/server/db";
 import { assets } from "~/server/db/schema";
 
 // export async function createAsset(name: string) {
 //   const user = auth();
+//   if (!(await isUserAdmin(user.userId))) throw new Error("Unauthorized");
 
 //   console.log("Create new asset:", {
 //     name: name,
@@ -56,8 +57,7 @@ export async function getAsset(id: number) {
 }
 
 export async function deleteAsset(id: number) {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+  if (!(await isCurrentUserAdmin())) throw new Error("Unauthorized");
 
   const result = await db.delete(assets).where(eq(assets.id, id));
   console.log("Asset deleted:", result);

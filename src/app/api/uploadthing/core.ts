@@ -1,7 +1,9 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { UploadedFileData } from "uploadthing/types";
+
+import { isUserAdmin } from "~/server/db";
 
 const f = createUploadthing();
 
@@ -10,10 +12,8 @@ async function middleware() {
   const user = auth();
   if (!user.userId) throw new UploadThingError("Unauthorized");
 
-  const fullUserdata = await clerkClient.users.getUser(user.userId);
-
   // Only admins are allowed to upload
-  if (!fullUserdata?.privateMetadata?.admin)
+  if (!(await isUserAdmin(user.userId)))
     throw new UploadThingError("Unauthorized");
 
   // Whatever is returned here is accessible in onUploadComplete as `metadata`

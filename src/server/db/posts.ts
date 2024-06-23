@@ -4,11 +4,12 @@ import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { UploadedFileData } from "uploadthing/types";
 
-import { db } from "~/server/db";
+import { db, isCurrentUserAdmin } from "~/server/db";
 import { postImage, posts } from "~/server/db/schema";
 
 // export async function createPost(title: string) {
 //   const user = auth();
+//   if (!(await isUserAdmin(user.userId))) throw new Error("Unauthorized");
 
 //   console.log("Create new post:", {
 //     title: title,
@@ -61,6 +62,8 @@ export async function updatePostImage(
   postId: number,
   userId: string,
 ) {
+  if (!(await isCurrentUserAdmin())) throw new Error("Unauthorized");
+
   const existing = await db.query.postImage.findFirst({
     where: (model, { eq }) => eq(model.postId, postId),
   });
@@ -95,8 +98,7 @@ export async function updatePostImage(
 }
 
 export async function deletePost(id: number) {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+  if (!(await isCurrentUserAdmin())) throw new Error("Unauthorized");
 
   const result = await db.delete(posts).where(eq(posts.id, id));
   console.log("Deleted post:", result);
