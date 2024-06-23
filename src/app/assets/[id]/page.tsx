@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 import { getAsset } from "~/server/db/assets";
 import { getImagesByIdentifier } from "~/server/db/image";
@@ -25,11 +26,13 @@ export default async function Page({ params }: { params: { id: number } }) {
         </section>
         <section className="w-full">
           {images?.map((image) => (
-            <img
-              key={image.id}
-              src={image.url}
-              alt={image.description || "Asset image"}
+            <Image
               className="rounded-lg"
+              src={image.url}
+              alt={image.description || "Post Image"}
+              height={256}
+              width={256}
+              style={{ objectFit: "cover" }}
             />
           ))}
         </section>
