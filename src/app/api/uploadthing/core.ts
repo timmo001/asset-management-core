@@ -52,50 +52,23 @@ export const ourFileRouter = {
       // If you throw, the user will not be able to upload
       if (!user.userId) throw new UploadThingError("Unauthorized");
 
-      const request = (await req.json()) as {
-        postId: number;
-        description?: string;
-      };
+      // const request = (await req.json()) as {
+      //   postId: number;
+      //   description?: string;
+      // };
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { ...request, userId: user.userId };
+      return {
+        // ...request,
+        userId: user.userId,
+      };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code runs on your server after upload
       console.log("Upload complete for userId:", metadata.userId);
       console.log("File url:", file.url);
 
-      const existing = await db.query.postImage.findFirst({
-        where: (model, { eq }) => eq(model.postId, metadata.postId),
-      });
-
-      if (existing?.id) {
-        const result = await db
-          .update(postImage)
-          .set({
-            url: file.url,
-            description: metadata.description,
-            createdBy: metadata.userId,
-          })
-          .where(eq(postImage.id, existing.id));
-
-        console.log("Updated post image:", result.rows[0]);
-
-        // This is sent to the clientside `onClientUploadComplete` callback
-        return result.rows[0];
-      } else {
-        const result = await db.insert(postImage).values({
-          postId: metadata.postId,
-          url: file.url,
-          description: metadata.description,
-          createdBy: metadata.userId,
-        });
-
-        console.log("Inserted post image:", result.rows[0]);
-
-        // This is sent to the clientside `onClientUploadComplete` callback
-        return result.rows[0];
-      }
+      return { file, userId: metadata.userId };
     }),
 } satisfies FileRouter;
 

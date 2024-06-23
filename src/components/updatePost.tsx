@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from "react";
 
 import SignedInContainer from "~/components/signedInContainer";
+import { updatePostImage } from "~/server/db/posts";
 import { UploadButton } from "~/utils/uploadthing";
 
 export default function UpdatePost({ postIn }: { postIn: any }) {
@@ -43,7 +44,7 @@ export default function UpdatePost({ postIn }: { postIn: any }) {
             onChange={updatePost}
           />
         </section>
-        <section className="w-full flex flex-col gap-4">
+        <section className="flex w-full flex-col gap-4">
           <h3 className="text-xl font-semibold">Image</h3>
           <UploadButton
             appearance={{
@@ -51,8 +52,14 @@ export default function UpdatePost({ postIn }: { postIn: any }) {
                 "w-full transform rounded-lg bg-slate-800 px-7 py-2 font-normal transition duration-300 hover:bg-slate-700",
             }}
             endpoint="postImageUploader"
-            onClientUploadComplete={(d) => {
-              console.log("Upload complete:", d);
+            onClientUploadComplete={(r) => {
+              console.log("Client upload complete:", r[0]?.serverData);
+              if (!r[0]?.serverData) return;
+              const { file, userId } = r[0]?.serverData;
+              updatePostImage(file, post.id, userId).then((d) => {
+                console.log("Updated post image:", d);
+                setPost({ ...post, image: file.url });
+              });
             }}
           />
           <img src={post.image?.url} alt={post.image?.description} />

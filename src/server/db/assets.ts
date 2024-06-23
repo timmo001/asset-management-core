@@ -1,5 +1,7 @@
 "use server";
+import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/server/db";
 import { assets } from "~/server/db/schema";
@@ -51,4 +53,15 @@ export async function getAsset(id: number) {
       images: true,
     },
   });
+}
+
+export async function deleteAsset(id: number) {
+  const user = auth();
+  if (!user.userId) throw new Error("Unauthorized");
+
+  const result = await db.delete(assets).where(eq(assets.id, id));
+  console.log("Asset deleted:", result);
+
+  // This will redirect the user to the homepage
+  redirect("/");
 }
