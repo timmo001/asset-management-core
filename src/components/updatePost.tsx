@@ -7,7 +7,6 @@ import { updateImage } from "~/server/db/image";
 import { updatePost } from "~/server/db/posts";
 import { UploadButton } from "~/utils/uploadthing";
 import SignedInContainer from "~/components/signedInContainer";
-import { set } from "zod";
 
 export default function UpdatePost({
   imageIn,
