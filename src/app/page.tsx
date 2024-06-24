@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import SignedInContainer from "~/components/signedInContainer";
 import { getAssets } from "~/server/db/assets";
+import { getImageByIdentifier } from "~/server/db/image";
 import { getPosts } from "~/server/db/posts";
 
 export const dynamic = "force-dynamic";
@@ -34,8 +35,8 @@ export default async function HomePage() {
           <section className="w-full">
             <h2 className="text-3xl font-semibold">Assets</h2>
             <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {assets.map((asset, index) => {
-                const image = asset.images[0];
+              {assets.map(async (asset, index) => {
+                const image = await getImageByIdentifier(`asset-${asset.id}`);
                 return (
                   <Link key={asset.id} href={`/assets/${asset.id}`}>
                     <div
