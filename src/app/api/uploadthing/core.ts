@@ -45,7 +45,11 @@ async function uploadComplete({
   // Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
   return {
     identifier: metadata.identifier,
-    image,
+    image: {
+      ...image,
+      createdAt: image.createdAt.toISOString(),
+      updatedAt: image.updatedAt ? image.updatedAt.toISOString() : null,
+    },
   };
 }
 
