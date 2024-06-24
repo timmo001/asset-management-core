@@ -14,7 +14,10 @@ export default async function Page({ params }: { params: { id: number } }) {
   if (!asset) notFound();
 
   const images = asset.imageIds
-    ? await getImagesByIdentifier(`asset-${asset.id}`)
+    ? (await getImagesByIdentifier(`asset-${asset.id}`)).map((im) => ({
+        url: im.url,
+        description: im.description,
+      }))
     : undefined;
 
   const isUserAdmin = await isCurrentUserAdmin();
