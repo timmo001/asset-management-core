@@ -28,8 +28,9 @@ export async function getImageByIdentifier(
 export async function updateImage(
   identifier: string,
   file: UploadedFileData,
+  user?: any,
 ): Promise<SelectImage> {
-  const user = auth();
+  user = user || auth();
   if (!user.userId) throw new Error("Unauthorized");
   if (!(await isUserAdmin(user.userId))) throw new Error("Unauthorized");
 

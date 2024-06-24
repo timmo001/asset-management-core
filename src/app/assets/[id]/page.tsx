@@ -24,8 +24,6 @@ export default async function Page({ params }: { params: { id: number } }) {
       <>
         <section className="w-full">
           <h2 className="text-3xl font-semibold">{asset.name}</h2>
-        </section>
-        <section className="w-full">
           <p>{asset.description}</p>
         </section>
         <section className="w-full">
@@ -43,7 +41,7 @@ export default async function Page({ params }: { params: { id: number } }) {
         {isUserAdmin && (
           <section className="w-72">
             <h2 className="pb-4 text-3xl font-semibold">Admin Section</h2>
-            <Link href={`/posts/${asset.id}/edit`}>
+            <Link href={`/assets/${asset.id}/edit`}>
               <button className="w-full transform rounded-lg bg-violet-900 px-7 py-2 font-normal transition duration-300 hover:bg-violet-800">
                 Edit Asset
               </button>

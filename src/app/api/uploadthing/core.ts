@@ -4,10 +4,14 @@ import { UploadThingError } from "uploadthing/server";
 import { UploadedFileData } from "uploadthing/types";
 
 import { isUserAdmin } from "~/server/db";
+import { updateImage } from "~/server/db/image";
 
 const f = createUploadthing();
 
-async function middleware() {
+async function middleware({ req }: { req: Request }): Promise<{
+  identifier: string;
+  user: any;
+}> {
   // This code runs on your server before upload
   const user = auth();
   if (!user.userId) throw new UploadThingError("Unauthorized");
@@ -17,7 +21,10 @@ async function middleware() {
     throw new UploadThingError("Unauthorized");
 
   // Whatever is returned here is accessible in onUploadComplete as `metadata`
-  return { userId: user.userId };
+  return {
+    identifier: req.headers.get("X-Identifier")!,
+    user,
+  };
 }
 
 async function uploadComplete({
@@ -25,15 +32,21 @@ async function uploadComplete({
   file,
 }: {
   metadata: {
-    userId: string;
+    identifier: string;
+    user: any;
   };
   file: UploadedFileData;
 }) {
   // This code runs on your server after upload
-  console.log("Upload complete for userId:", metadata.userId);
-  console.log("File url:", file.url);
+  console.log("Upload complete:", { metadata, file });
 
-  return { file, userId: metadata.userId };
+  const image = await updateImage(metadata.identifier, file, metadata.user);
+
+  // Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+  return {
+    identifier: metadata.identifier,
+    image,
+  };
 }
 
 // FileRouter for your app, can contain multiple FileRoutes

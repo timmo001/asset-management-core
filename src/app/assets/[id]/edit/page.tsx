@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import UpdateAsset from "~/components/updateAsset";
 
 import { getAsset } from "~/server/db/assets";
 import { getImagesByIdentifier } from "~/server/db/image";
@@ -9,10 +10,7 @@ export default async function Page({ params }: { params: { id: number } }) {
   const asset = await getAsset(params.id);
   if (!asset) notFound();
 
-  const images = asset.imageIds
-    ? await getImagesByIdentifier(`asset-${asset.id}`)
-    : undefined;
+  const images = await getImagesByIdentifier(`asset-${asset.id}`);
 
-  return <></>;
-  // return <UpdateAsset AssetIn={Asset} />;
+  return <UpdateAsset assetIn={asset} imagesIn={images} />;
 }

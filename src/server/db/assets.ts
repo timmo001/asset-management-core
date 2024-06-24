@@ -80,7 +80,7 @@ export async function updateAsset(
   const result = await db
     .update(assets)
     .set({
-      name: asset.name,
+      ...asset,
       updatedAt: new Date(),
     })
     .where(eq(assets.id, asset.id));
