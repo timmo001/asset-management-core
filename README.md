@@ -1,3 +1,3 @@
 # Asset Management - Core
 
-Asset management system written with the T3 stack
+An asset management system created with the [T3 stack](https://create.t3.gg/).
