@@ -44,7 +44,6 @@ export default function NavigationTop() {
       </div>
       {breadcrumbs}
       <div className="flex-1" />
-      {pathname}
       <div className="flex flex-row gap-4">
         <SignedOut>
           <div className="transform rounded-md bg-violet-900 bg-opacity-60 px-4 py-2 text-white shadow-lg drop-shadow-2xl transition duration-300 hover:scale-105">
