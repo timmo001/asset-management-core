@@ -3,11 +3,9 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import { SelectAsset, SelectImage, SelectImages } from "~/server/db/schema";
-import { updateImage } from "~/server/db/image";
 import { updateAsset } from "~/server/db/assets";
-import { UploadDropzone } from "~/utils/uploadthing";
+import { UploadDropzone } from "~/components/uploadthing";
 import SignedInContainer from "~/components/signedInContainer";
-import { ClientUploadedFileData } from "uploadthing/types";
 
 export default function UpdateAsset({
   assetIn,

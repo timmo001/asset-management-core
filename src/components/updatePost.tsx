@@ -3,9 +3,8 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import { SelectImage, SelectPost } from "~/server/db/schema";
-import { updateImage } from "~/server/db/image";
 import { updatePost } from "~/server/db/posts";
-import { UploadDropzone } from "~/utils/uploadthing";
+import { UploadDropzone } from "~/components/uploadthing";
 import SignedInContainer from "~/components/signedInContainer";
 
 export default function UpdatePost({
