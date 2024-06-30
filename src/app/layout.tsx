@@ -4,14 +4,14 @@ import { GeistSans } from "geist/font/sans";
 
 import "~/styles/globals.css";
 
-import NavigationTop from "~/components/navigationTop";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { ourFileRouter } from "~/app/api/uploadthing/core";
+import NavigationTop from "~/components/navigationTop";
 
 export const metadata = {
   title: "Asset Management",
-  description: "Asset Management System Written with the T3 stack",
+  description: "Asset Management System",
   icons: [{ rel: "icon", url: "/icon" }],
 };
 
