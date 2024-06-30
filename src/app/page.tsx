@@ -29,7 +29,11 @@ export default async function HomePage() {
                       alt={image.description || "Asset Image"}
                       height={208}
                       width={520}
-                      style={{ height: "13rem", objectFit: "cover" }}
+                      style={{
+                        height: "13rem",
+                        width: "auto",
+                        objectFit: "cover",
+                      }}
                     />
                   ) : (
                     <div className="h-40 w-full rounded-lg bg-gray-300"></div>
@@ -64,8 +68,12 @@ export default async function HomePage() {
                           alt={image.description || "Asset Image"}
                           height={208}
                           width={520}
-                          style={{ height: "13rem", objectFit: "cover" }}
-                          />
+                          style={{
+                            height: "13rem",
+                            width: "auto",
+                            objectFit: "cover",
+                          }}
+                        />
                       ) : (
                         <div className="h-40 w-full rounded-lg bg-gray-300"></div>
                       )}
