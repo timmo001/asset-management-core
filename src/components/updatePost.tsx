@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
+import { BreadcrumbPost } from "~/components/breadcrumb/post";
 import { SelectImage, SelectPost } from "~/server/db/schema";
 import { updatePost } from "~/server/db/posts";
 import { UploadDropzone } from "~/components/uploadthing";
@@ -26,6 +27,7 @@ export default function UpdatePost({
   return (
     <SignedInContainer>
       <>
+        <BreadcrumbPost post={post} />
         <section className="w-full">
           <h2 className="text-3xl font-semibold">Edit Post</h2>
         </section>

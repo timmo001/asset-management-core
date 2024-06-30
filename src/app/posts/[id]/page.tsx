@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+import { BreadcrumbPost } from "~/components/breadcrumb/post";
 import { getImageByIdentifier } from "~/server/db/image";
 import { getPost } from "~/server/db/posts";
 import { isCurrentUserAdmin } from "~/server/db";
@@ -22,6 +23,7 @@ export default async function Page({ params }: { params: { id: number } }) {
   return (
     <SignedInContainer>
       <>
+        <BreadcrumbPost post={post} />
         <section className="w-full">
           <h2 className="text-3xl font-semibold">{post.title}</h2>
           <p>{post.subtitle}</p>

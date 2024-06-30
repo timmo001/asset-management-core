@@ -1,48 +1,39 @@
 "use client";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import Link from "next/link";
 
+import { useBreadcrumbStore } from "~/stores/breadcrumb";
 import NewItem from "~/components/newItem";
-
-const paths: { [key: string]: string[] | undefined } = {
-  "/": [],
-  "/assets/new": ["Assets", "New Asset"],
-  "/assets/[id]/edit": ["Assets", "Asset", "Edit"],
-  "/assets/[id]": ["Assets", "Asset"],
-  "/assets": ["Assets"],
-  "/posts/new": ["Posts", "New Post"],
-  "/posts/[id]/edit": ["Posts", "Post", "Edit"],
-  "/posts/[id]": ["Posts", "Post"],
-  "/posts": ["Posts"],
-};
+import { useEffect } from "react";
 
 export default function NavigationTop() {
   const pathname = usePathname();
 
-  const breadcrumbs = useMemo(() => {
-    const path = Object.entries(paths).find(([r, t]) => {
-      const re = new RegExp(`^${r.replace(/\[.*?\]/g, ".*")}$`);
-      return re.test(pathname);
-    })?.[1];
-    if (!path) return null;
-    return path.map((t, i) => (
-      <>
-        <div>/</div>
-        <div key={i}>
-          {i === path.length - 1 ? <Link href={pathname}>{t}</Link> : t}
-        </div>
-      </>
-    ));
+  const breadcrumbs = useBreadcrumbStore();
+
+  useEffect(() => {
+    breadcrumbs.updatePathname(pathname);
   }, [pathname]);
+
+  const paths = pathname.split("/");
 
   return (
     <nav className="mx-auto flex w-full max-w-screen-xl items-center justify-start gap-4 px-8 py-3 text-lg font-light">
-      <div>
-        <Link href="/">Asset Management</Link>
-      </div>
-      {breadcrumbs}
+      <Link href="/">Asset Management</Link>
+      {breadcrumbs.path?.map((t: string, i: number, path: Array<string>) => {
+        if (t === "[name]") t = breadcrumbs.name || "";
+        return (
+          <div key={i} className="flex flex-row gap-4">
+            <div>/</div>
+            <div>
+              <Link href={paths.slice(0, i + 1 - path.length).join("/")}>
+                {t}
+              </Link>
+            </div>
+          </div>
+        );
+      })}
       <div className="flex-1" />
       <div className="flex flex-row gap-4">
         <SignedOut>
