@@ -2,6 +2,7 @@
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
+import { BreadcrumbAsset } from "~/components/breadcrumb/asset";
 import { SelectAsset, SelectImage, SelectImages } from "~/server/db/schema";
 import { updateAsset } from "~/server/db/assets";
 import { UploadDropzone } from "~/components/uploadthing";
@@ -26,6 +27,7 @@ export default function UpdateAsset({
   return (
     <SignedInContainer>
       <>
+        <BreadcrumbAsset asset={asset} />
         <section className="w-full">
           <h2 className="text-3xl font-semibold">Edit Asset</h2>
         </section>

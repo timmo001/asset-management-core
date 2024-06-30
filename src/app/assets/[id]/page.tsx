@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+import { BreadcrumbAsset } from "~/components/breadcrumb/asset";
 import { getAsset } from "~/server/db/assets";
 import { getImagesByIdentifier } from "~/server/db/image";
 import { isCurrentUserAdmin } from "~/server/db";
@@ -25,6 +26,7 @@ export default async function Page({ params }: { params: { id: number } }) {
   return (
     <SignedInContainer>
       <>
+        <BreadcrumbAsset asset={asset} />
         <section className="w-full">
           <h2 className="text-3xl font-semibold">{asset.name}</h2>
           <p>{asset.description}</p>
