@@ -31,7 +31,6 @@ export default async function HomePage() {
                       width={520}
                       style={{
                         height: "13rem",
-                        width: "auto",
                         objectFit: "cover",
                       }}
                     />
@@ -70,7 +69,6 @@ export default async function HomePage() {
                           width={520}
                           style={{
                             height: "13rem",
-                            width: "auto",
                             objectFit: "cover",
                           }}
                         />
