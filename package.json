@@ -16,7 +16,7 @@
   "dependencies": {
     "@clerk/nextjs": "5.2.4",
     "@clerk/themes": "2.1.12",
-    "@t3-oss/env-nextjs": "0.10.1",
+    "@t3-oss/env-nextjs": "0.11.0",
     "@uploadthing/react": "6.7.2",
     "@vercel/postgres": "0.9.0",
     "drizzle-orm": "0.32.0",
