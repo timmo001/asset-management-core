@@ -17,7 +17,7 @@
     "@clerk/nextjs": "5.7.5",
     "@clerk/themes": "2.2.42",
     "@t3-oss/env-nextjs": "0.13.4",
-    "@uploadthing/react": "7.3.0",
+    "@uploadthing/react": "7.3.1",
     "@vercel/postgres": "0.10.0",
     "drizzle-orm": "0.43.1",
     "geist": "1.4.2",
