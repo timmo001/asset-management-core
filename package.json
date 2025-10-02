@@ -23,7 +23,7 @@
     "geist": "1.5.1",
     "next": "14.2.30",
     "postgres": "3.4.7",
-    "react": "18.3.1",
+    "react": "19.2.0",
     "react-dom": "18.3.1",
     "uploadthing": "7.7.3",
     "zod": "4.0.13",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@types/eslint": "8.56.10",
     "@types/node": "24.6.2",
-    "@types/react": "18.3.13",
+    "@types/react": "19.2.0",
     "@types/react-dom": "18.3.1",
     "@typescript-eslint/eslint-plugin": "8.45.0",
     "@typescript-eslint/parser": "8.45.0",
